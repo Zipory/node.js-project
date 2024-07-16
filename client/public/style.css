@@ -1,0 +1,16 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+label {
+    cursor: pointer;
+    display: block;
+}
+input {
+    cursor: pointer;
+    display: block;
+}
+input::placeholder {
+    text-align: center;
+}
