@@ -3,6 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const exp = require("constants");
 const app = express();
+let folderUsers = 0;
 app.use(express.json());
 app.use("/", express.static("../client/public"));
 app.use("/inside", express.static('../client/inside'));
@@ -30,6 +31,21 @@ app.post("/post", (req, res) => {
 else {res.send("you cant use that name.")}
 });
 
+app.get("/inside/:name", (req, res) => {
+  // console.log(req.params.name);
+  if (checkUser(req.params.name)) {
+    let folderName = getFolder(req.params.name);
+    console.log(folderName);
+    let myFolder = fs.readdirSync(`users/${folderName}`);
+    // console.log(myFolder.length);
+    // let arr = []
+    // for (let i = 0; i < myFolder.length; i++) {
+    //   arr.push(fs.readFileSync(`users/${folderName}/${myFolder[0]}`));
+    // }
+    res.send(myFolder);
+  }
+})
+
 app.listen(port, () => {
   console.log(`listening port ${port}`);
 });
@@ -37,9 +53,15 @@ app.listen(port, () => {
 /**------------functions---------------- */
 
 function checkUser(lastName) {
-  let folderUsers = fs.readdirSync("users");
+  folderUsers = fs.readdirSync("users");
   return folderUsers.includes(lastName);
   }
+
+function getFolder(lastName) {
+  return folderUsers.find( (name) => {
+    return name == lastName;
+  });
+}
 
 function demo(lastName) {
   let sss = fs.readdirSync(`users`);
